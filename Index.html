@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+  <base target="_top">
+
+  <meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
+>
+
+  <title>MC-App-Almara</title>
+
+  <?!= include_('CSS'); ?>
+
+</head>
+
+<body>
+
+<!-- ======================================================
+     LOGIN SCREEN
+     ====================================================== -->
+
+<div class="login-screen" id="loginScreen">
+
+  <div class="login-box">
+
+```
+<div class="login-logo">
+  APV
+</div>
+
+<div class="login-brand">
+  MC-App-Almara
+</div>
+
+<div class="login-company">
+  PT ALMARA PUTRA VALASINDO
+</div>
+
+
+<div class="login-divider"></div>
+
+
+<div class="login-title">
+  Masuk ke Aplikasi
+</div>
+
+<div class="login-subtitle">
+  Silakan masuk menggunakan akun Anda.
+</div>
+
+
+<form onsubmit="handleLogin(event)">
+
+  <div class="form-group">
+
+    <label>
+      Username
+    </label>
+
+    <input
+      type="text"
+      id="loginUsername"
+      autocomplete="username"
+      placeholder="Masukkan username"
+      required
+    >
+
+  </div>
+
+
+  <div class="form-group">
+
+    <label>
+      Password
+    </label>
+
+    <input
+      type="password"
+      id="loginPassword"
+      autocomplete="current-password"
+      placeholder="Masukkan password"
+      required
+    >
+
+  </div>
+
+
+  <div
+    class="login-error"
+    id="loginError"
+  ></div>
+
+
+  <button
+    type="submit"
+    class="login-button"
+    id="loginButton"
+  >
+    <span id="loginButtonText">
+      Masuk
+    </span>
+  </button>
+
+</form>
+
+
+<div class="login-footer">
+
+  Authorized Money Changer
+
+  <br>
+
+  No Izin BI :
+  27/17/KEP.GBI/SR/2025
+
+</div>
+```
+
+  </div>
+
+</div>
+
+  <!-- ======================================================
+       APP SHELL
+       ====================================================== -->
+
+  <div class="app-shell" id="appShell" style="display:none;">
+
+```
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+
+    <div class="brand-logo">
+      APV
+    </div>
+
+    <div class="brand-text">
+      <div class="brand-name">
+        MC-App-Almara
+      </div>
+
+      <div class="brand-company">
+        PT ALMARA PUTRA VALASINDO
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- MENU -->
+  <nav class="navigation">
+
+    <div class="menu-section">
+      UTAMA
+    </div>
+
+    <button
+      class="nav-item active"
+      onclick="showPage('dashboard', this)"
+    >
+      <span class="nav-icon">⌂</span>
+      <span>Dashboard</span>
+    </button>
+
+
+    <div class="menu-section">
+      TRANSAKSI
+    </div>
+
+    <button
+      class="nav-item"
+      onclick="showPage('transaction', this)"
+    >
+      <span class="nav-icon">⇄</span>
+      <span>Jual / Beli Valas</span>
+    </button>
+
+    <button
+      class="nav-item"
+      onclick="showPage('booking', this)"
+    >
+      <span class="nav-icon">▣</span>
+      <span>Booking</span>
+    </button>
+
+
+    <div class="menu-section">
+      MASTER DATA
+    </div>
+
+    <button
+      class="nav-item"
+      onclick="showPage('customer', this)"
+    >
+      <span class="nav-icon">♙</span>
+      <span>Nasabah</span>
+    </button>
+
+    <button
+      class="nav-item"
+      onclick="showPage('currency', this)"
+    >
+      <span class="nav-icon">¤</span>
+      <span>Mata Uang</span>
+    </button>
+
+    <button
+      class="nav-item"
+      onclick="showPage('rate', this)"
+    >
+      <span class="nav-icon">⌁</span>
+      <span>Kurs</span>
+    </button>
+
+
+    <div class="menu-section">
+      OPERASIONAL
+    </div>
+
+    <button
+      class="nav-item"
+      onclick="showPage('stock', this)"
+    >
+      <span class="nav-icon">▤</span>
+      <span>Stock Valas</span>
+    </button>
+
+    <button
+      class="nav-item"
+      onclick="showPage('cashbank', this)"
+    >
+      <span class="nav-icon">▣</span>
+      <span>Cash & Bank</span>
+    </button>
+
+    <button
+      class="nav-item"
+      onclick="showPage('closing', this)"
+    >
+      <span class="nav-icon">✓</span>
+      <span>Closing</span>
+    </button>
+
+
+    <div class="menu-section">
+      LAPORAN
+    </div>
+
+    <button
+      class="nav-item"
+      onclick="showPage('report', this)"
+    >
+      <span class="nav-icon">▥</span>
+      <span>Laporan</span>
+    </button>
+
+    <button
+      class="nav-item"
+      onclick="showPage('bi', this)"
+    >
+      <span class="nav-icon">◎</span>
+      <span>Laporan BI</span>
+    </button>
+
+  </nav>
+
+
+  <!-- SIDEBAR FOOTER -->
+  <div class="sidebar-footer">
+
+    <div class="system-status">
+      <span class="status-dot"></span>
+      Sistem Online
+    </div>
+
+    <div class="version">
+      MC-App-Almara v1.0.0
+    </div>
+
+  </div>
+
+</aside>
+
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+
+    <button
+      class="mobile-menu"
+      onclick="toggleSidebar()"
+    >
+      ☰
+    </button>
+
+    <div class="page-title-area">
+
+      <div class="breadcrumb">
+        MC-App-Almara / <span id="breadcrumbPage">Dashboard</span>
+      </div>
+
+      <h1 id="pageTitle">
+        Dashboard
+      </h1>
+
+    </div>
+
+
+    <div class="topbar-right">
+
+      <div class="operational-status">
+        <span class="status-dot"></span>
+        Operasional
+      </div>
+
+      <div class="user-box">
+
+        <div class="user-avatar">
+          A
+        </div>
+
+        <div class="user-info">
+          <strong>Administrator</strong>
+          <small>SUPER ADMIN</small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- CONTENT -->
+  <section class="content">
+
+
+    <!-- DASHBOARD -->
+    <div
+      class="page active"
+      id="page-dashboard"
+    >
+
+      <div class="welcome-card">
+
+        <div>
+
+          <div class="eyebrow">
+            PT ALMARA PUTRA VALASINDO
+          </div>
+
+          <h2>
+            Selamat datang di
+            <span>MC-App-Almara</span>
+          </h2>
+
+          <p>
+            Sistem operasional Money Changer
+            untuk transaksi, nasabah, kurs,
+            stock, cash, bank dan pelaporan.
+          </p>
+
+        </div>
+
+        <div class="welcome-badge">
+          APV
+        </div>
+
+      </div>
+
+
+      <!-- STATISTICS -->
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+
+          <div class="stat-icon blue">
+            ⇄
+          </div>
+
+          <div>
+            <span>Transaksi Hari Ini</span>
+            <strong>0</strong>
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-icon green">
+            $
+          </div>
+
+          <div>
+            <span>Stock Valas</span>
+            <strong>0</strong>
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-icon orange">
+            ♙
+          </div>
+
+          <div>
+            <span>Nasabah</span>
+            <strong>0</strong>
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-icon purple">
+            Rp
+          </div>
+
+          <div>
+            <span>Cash Hari Ini</span>
+            <strong>Rp 0</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- QUICK MENU -->
+
+      <div class="section-header">
+
+        <div>
+          <h3>Akses Cepat</h3>
+          <p>Menu yang paling sering digunakan.</p>
+        </div>
+
+      </div>
+
+
+      <div class="quick-grid">
+
+        <button
+          onclick="showPage('transaction')"
+          class="quick-card"
+        >
+          <span>⇄</span>
+          <strong>Transaksi Valas</strong>
+          <small>Jual / beli valas</small>
+        </button>
+
+
+        <button
+          onclick="showPage('customer')"
+          class="quick-card"
+        >
+          <span>♙</span>
+          <strong>Nasabah</strong>
+          <small>KYC & data nasabah</small>
+        </button>
+
+
+        <button
+          onclick="showPage('rate')"
+          class="quick-card"
+        >
+          <span>⌁</span>
+          <strong>Kurs</strong>
+          <small>Kurs acuan & Almara</small>
+        </button>
+
+
+        <button
+          onclick="showPage('stock')"
+          class="quick-card"
+        >
+          <span>▤</span>
+          <strong>Stock Valas</strong>
+          <small>Saldo dan mutasi</small>
+        </button>
+
+      </div>
+
+
+      <!-- SYSTEM INFO -->
+
+      <div class="system-card">
+
+        <div>
+          <span class="system-label">
+            STATUS SISTEM
+          </span>
+
+          <h3>
+            MC-App-Almara siap digunakan
+          </h3>
+
+          <p>
+            Database 44 sheet telah berhasil
+            terpasang dan siap digunakan.
+          </p>
+        </div>
+
+        <div class="system-online">
+          <span class="status-dot"></span>
+          ONLINE
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- OTHER PAGES -->
+
+    <div class="page" id="page-transaction">
+      <div class="placeholder">
+        <div class="placeholder-icon">⇄</div>
+        <h2>Transaksi Jual / Beli Valas</h2>
+        <p>Modul POS akan kita bangun pada tahap berikutnya.</p>
+      </div>
+    </div>
+
+
+    <div class="page" id="page-booking">
+      <div class="placeholder">
+        <div class="placeholder-icon">▣</div>
+        <h2>Booking</h2>
+        <p>Modul Booking akan kita bangun pada tahap berikutnya.</p>
+      </div>
+    </div>
+
+
+    <div class="page" id="page-customer">
+      <div class="placeholder">
+        <div class="placeholder-icon">♙</div>
+        <h2>Nasabah / KYC</h2>
+        <p>Modul Nasabah dan KYC akan kita bangun berikutnya.</p>
+      </div>
+    </div>
+
+
+    <div class="page" id="page-currency">
+      <div class="placeholder">
+        <div class="placeholder-icon">¤</div>
+        <h2>Mata Uang</h2>
+        <p>Master mata uang akan kita bangun berikutnya.</p>
+      </div>
+    </div>
+
+
+    <div class="page" id="page-rate">
+      <div class="placeholder">
+        <div class="placeholder-icon">⌁</div>
+        <h2>Kurs</h2>
+        <p>Integrasi kurs dan Smartdeal akan kita bangun berikutnya.</p>
+      </div>
+    </div>
+
+
+    <div class="page" id="page-stock">
+      <div class="placeholder">
+        <div class="placeholder-icon">▤</div>
+        <h2>Stock Valas</h2>
+        <p>Stock Ledger, FIFO dan Weighted Average akan kita bangun berikutnya.</p>
+      </div>
+    </div>
+
+
+    <div class="page" id="page-cashbank">
+      <div class="placeholder">
+        <div class="placeholder-icon">▣</div>
+        <h2>Cash & Bank</h2>
+        <p>Cash Ledger dan Bank Ledger akan kita bangun berikutnya.</p>
+      </div>
+    </div>
+
+
+    <div class="page" id="page-closing">
+      <div class="placeholder">
+        <div class="placeholder-icon">✓</div>
+        <h2>Closing</h2>
+        <p>Shift Closing dan Day Closing akan kita bangun berikutnya.</p>
+      </div>
+    </div>
+
+
+    <div class="page" id="page-report">
+      <div class="placeholder">
+        <div class="placeholder-icon">▥</div>
+        <h2>Laporan</h2>
+        <p>Modul laporan operasional akan kita bangun berikutnya.</p>
+      </div>
+    </div>
+
+
+    <div class="page" id="page-bi">
+      <div class="placeholder">
+        <div class="placeholder-icon">◎</div>
+        <h2>Laporan BI</h2>
+        <p>SIPESAT dan LKBU akan kita bangun berikutnya.</p>
+      </div>
+    </div>
+
+
+  </section>
+
+</main>
+```
+
+  </div>
+
+  <?!= include_('JS'); ?>
+
+</body>
+
+</html>

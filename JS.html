@@ -1,0 +1,329 @@
+<script>
+
+const PAGE_NAMES = {
+  dashboard: 'Dashboard',
+  transaction: 'Jual / Beli Valas',
+  booking: 'Booking',
+  customer: 'Nasabah / KYC',
+  currency: 'Mata Uang',
+  rate: 'Kurs',
+  stock: 'Stock Valas',
+  cashbank: 'Cash & Bank',
+  closing: 'Closing',
+  report: 'Laporan',
+  bi: 'Laporan BI'
+};
+
+/**
+
+* ======================================================
+* LOGIN
+* ======================================================
+  */
+
+function handleLogin(event) {
+
+event.preventDefault();
+
+const username =
+document.getElementById(
+'loginUsername'
+).value.trim();
+
+const password =
+document.getElementById(
+'loginPassword'
+).value;
+
+const error =
+document.getElementById(
+'loginError'
+);
+
+const button =
+document.getElementById(
+'loginButton'
+);
+
+const buttonText =
+document.getElementById(
+'loginButtonText'
+);
+
+error.textContent = '';
+
+button.disabled = true;
+
+buttonText.textContent =
+'Memeriksa...';
+
+google.script.run
+
+```
+.withSuccessHandler(function(result) {
+
+  button.disabled = false;
+
+  buttonText.textContent =
+    'Masuk';
+
+
+  if (!result.success) {
+
+    error.textContent =
+      result.message ||
+      'Login gagal.';
+
+    return;
+
+  }
+
+
+  // Simpan user di session browser
+  sessionStorage.setItem(
+    'mcAlmaraUser',
+    JSON.stringify(result.user)
+  );
+
+
+  // Tampilkan aplikasi
+  showApplication(
+    result.user
+  );
+
+})
+
+.withFailureHandler(function(error) {
+
+  button.disabled = false;
+
+  buttonText.textContent =
+    'Masuk';
+
+
+  error.textContent =
+    error.message ||
+    'Terjadi kesalahan server.';
+
+})
+
+.loginUser(
+  username,
+  password
+);
+```
+
+}
+
+/**
+
+* Tampilkan aplikasi setelah login
+  */
+  function showApplication(user) {
+
+document.getElementById(
+'loginScreen'
+).style.display = 'none';
+
+document.getElementById(
+'appShell'
+).style.display = 'flex';
+
+// Update nama user
+const userName =
+document.querySelector(
+'.user-info strong'
+);
+
+const userRole =
+document.querySelector(
+'.user-info small'
+);
+
+const avatar =
+document.querySelector(
+'.user-avatar'
+);
+
+if (userName) {
+userName.textContent =
+user.nama || user.username;
+}
+
+if (userRole) {
+userRole.textContent =
+user.idRole || '';
+}
+
+if (avatar) {
+avatar.textContent =
+(
+user.nama ||
+user.username ||
+'A'
+)
+.charAt(0)
+.toUpperCase();
+}
+
+}
+
+/**
+
+* Cek session browser
+  */
+  function checkLoginSession() {
+
+const saved =
+sessionStorage.getItem(
+'mcAlmaraUser'
+);
+
+if (!saved) {
+return;
+}
+
+try {
+
+```
+const user =
+  JSON.parse(saved);
+
+showApplication(user);
+```
+
+} catch (error) {
+
+```
+sessionStorage.removeItem(
+  'mcAlmaraUser'
+);
+```
+
+}
+
+}
+
+
+/**
+ * Navigasi halaman
+ */
+function showPage(page, button) {
+
+  document
+    .querySelectorAll('.page')
+    .forEach(function(el) {
+      el.classList.remove('active');
+    });
+
+
+  const target = document.getElementById(
+    'page-' + page
+  );
+
+  if (target) {
+    target.classList.add('active');
+  }
+
+
+  document
+    .querySelectorAll('.nav-item')
+    .forEach(function(el) {
+      el.classList.remove('active');
+    });
+
+
+  if (button) {
+    button.classList.add('active');
+  }
+
+
+  const title =
+    PAGE_NAMES[page] || 'Dashboard';
+
+
+  document.getElementById(
+    'pageTitle'
+  ).textContent = title;
+
+
+  document.getElementById(
+    'breadcrumbPage'
+  ).textContent = title;
+
+
+  closeSidebar();
+}
+
+
+/**
+ * Sidebar mobile
+ */
+function toggleSidebar() {
+
+  const sidebar =
+    document.getElementById('sidebar');
+
+  sidebar.classList.toggle('open');
+
+}
+
+
+/**
+ * Tutup sidebar
+ */
+function closeSidebar() {
+
+  const sidebar =
+    document.getElementById('sidebar');
+
+  sidebar.classList.remove('open');
+
+}
+
+
+/**
+ * Load informasi aplikasi dari Apps Script
+ */
+function loadAppData() {
+
+  google.script.run
+    .withSuccessHandler(function(data) {
+
+      console.log(
+        'MC-App-Almara:',
+        data
+      );
+
+    })
+    .withFailureHandler(function(error) {
+
+      console.error(
+        'Gagal mengambil data aplikasi:',
+        error
+      );
+
+    })
+    .getWebAppData();
+
+}
+
+
+/**
+ * Jalankan saat halaman siap
+ */
+document.addEventListener(
+'DOMContentLoaded',
+function() {
+
+```
+loadAppData();
+
+checkLoginSession();
+```
+
+}
+);
+
+
+</script>
