@@ -92,10 +92,11 @@ function setupCanonicalDatabase() {
         return;
       }
 
-      // Legacy sheet dengan nama sama tidak disentuh.
-      // Dibuat sheet canonical dengan suffix hanya jika schema lama terdeteksi.
-      const safeName = getMigrationSheetName_(ss, sheetName);
-      const target = ss.getSheetByName(safeName) || ss.insertSheet(safeName);
+      // Nama canonical harus tetap persis. Jika sheet lama memakai nama ini,
+      // rename dulu agar data legacy tetap aman dan sheet canonical dapat dibuat.
+      const legacyName = getMigrationSheetName_(ss, sheetName);
+      sh.setName(legacyName);
+      const target = ss.insertSheet(sheetName);
       initializeCanonicalSheet_(target, headers);
       created++;
     });
