@@ -1,0 +1,9 @@
+# Local / credentials
+.clasprc.json
+node_modules/
+.env
+*.log
+.DS_Store
+
+# Do not deploy legacy backups
+99_Backup/**
